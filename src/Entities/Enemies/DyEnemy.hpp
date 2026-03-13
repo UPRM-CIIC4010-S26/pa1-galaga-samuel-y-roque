@@ -12,7 +12,7 @@ class DyEnemy : public Enemy {
             this->cooldown = GetRandomValue(90, 300);
             this->health = 1; 
 
-        if (rand() % 2 == 0) {
+        if (GetRandomValue(0, 1) == 0) {
         spriteRect = {0, 0, 13, 13}; // og tex
         } else {
         spriteRect = {2, 147, 13, 13}; // tex nueva
