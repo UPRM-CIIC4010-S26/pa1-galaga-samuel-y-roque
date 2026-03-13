@@ -11,6 +11,12 @@ class DyEnemy : public Enemy {
         DyEnemy(float x, float y) : Enemy(x, y) { 
             this->cooldown = GetRandomValue(90, 300);
             this->health = 1; 
+
+        if (GetRandomValue(0, 1) == 0) {
+        spriteRect = {0, 0, 13, 13}; // og tex
+        } else {
+        spriteRect = {2, 147, 13, 13}; // tex nueva
+        }
         }
 
         void draw() override;
