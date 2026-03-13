@@ -4,6 +4,7 @@
 #include "ImageManager.hpp"
 #include "Animation.hpp"
 #include <iostream>
+#include "SoundManager.hpp"
 
 class Enemy {
     protected:
@@ -24,6 +25,7 @@ class Enemy {
         inline static float direction = 0.5;
         inline static int directionChange = 100;
         inline static std::vector<std::pair<std::pair<float, float>, Enemy*>> enemies;
+        inline static int score = 0;
 
         Enemy() {}
 
@@ -55,12 +57,16 @@ class Enemy {
                     for (Projectile& p2 : Projectile::projectiles) {
                         if (p2.ID != 1 && HitBox::Collision(p.second->hitBox, p2.getHitBox())) {
                             p.second->health--;
+                            if (p.second->health > 0) {
+                            PlaySound(SoundManager::hit);
+                                }
                             p2.del = true;
                         }
                     }
 
                     if (p.second->health <= 0) {
-                        //score += p.second->points; //score acordado por partner
+                        PlaySound(SoundManager::dead);
+                        Enemy::score += p.second->points; //score acordado por partner
                         Animation::animations.push_back(
                             Animation(p.second->position.first, p.second->position.second, 155, 0, 33, 33, 30, 30, 4, ImageManager::SpriteSheet)
                         );
