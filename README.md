@@ -11,8 +11,8 @@ Don't forget that you must also fill out an evaluation form in Moodle to conside
 
 ## Grading
 
-(STUDENT NUMBER HERE) (STUDENT NAME HERE) (STUDENT EMAIL HERE)
-(STUDENT NUMBER HERE) (STUDENT NAME HERE) (STUDENT EMAIL HERE)
+802242635 Roque Pagan Sanchez roque.pagan2@upr.edu
+802218258 Samuel Ruiz samuel.ruiz7@upr.edu
 
 Any project that doesn't compile will receive a 0.
 

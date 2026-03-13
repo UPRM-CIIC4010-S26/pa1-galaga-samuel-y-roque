@@ -17,8 +17,12 @@ Program::Program() {
         });
 
     for (int i = 0; i < 30; i++) {
-        float x = 250 + 50 * i;
-        float y = 200 + 50 * i;
+        int column = i % 10; 
+        int row = i / 10;
+        float x = 250 + 50 * column;
+        float y = 200 + 50 * row;
+
+
 
         Enemy::enemies.push_back(std::pair<std::pair<float, float>, Enemy*> {
             std::pair<float, float>{x, y}, 
@@ -36,6 +40,11 @@ void Program::Update() {
 
     if (!startup && !paused && !gameOver && pauseFrames <= 0) {
         Enemy::ManageEnemies(player->hitBox);
+        if(Enemy::score >= scoreThreshold && lives < 5)
+        {
+            lives++;
+            scoreThreshold += 1000;
+        }
         StdEnemy::attackReset();
         ManageEnemyRespawns();
         player->update();
@@ -57,7 +66,10 @@ void Program::Update() {
 
         for (Projectile& p : Projectile::projectiles) { 
             p.update(); 
-
+            if(p.ID != 0 && HitBox::Collision(player ->hitBox, p.getHitBox()))
+            {
+                PlayerReset();
+            }
         }
 
         if (lives <= 0 && pauseFrames <= 0) gameOver = true;
@@ -68,6 +80,7 @@ void Program::Update() {
 
 void Program::Draw() {
     background.Draw();
+    DrawText(("Score: " + std::to_string(Enemy::score)).c_str(), 10, 10, 24, WHITE);
     if (pauseFrames <= 0 && !gameOver) player->draw();
     for (Animation& a : Animation::animations) a.draw();
 
@@ -91,7 +104,11 @@ void Program::ManageEnemyRespawns() {
 
     respawnCooldown -= 1;
     if (respawnCooldown <= 0) {
-        respawnCooldown = 1080;
+        respawnCooldown = 1080 - (Enemy::score / 10);
+        if(respawnCooldown < 300)
+        {
+            respawnCooldown = 300;
+        }
         for (std::pair<std::pair<float, float>, Enemy*>& p : Enemy::enemies) {
             if (!p.second && p.first.second != 150) {
                 int eType = GetRandomValue(1, 3);
@@ -152,6 +169,7 @@ void Program::KeyInputs() {
     if (!paused && !startup && IsKeyPressed('O')) gameOver = !gameOver;
     if (!gameOver && !paused && IsKeyPressed('I')) startup = !startup;
     if (IsKeyPressed('H')) HitBox::drawHitbox = !HitBox::drawHitbox;
+    if (IsKeyPressed('K')) Enemy::score += 500;
     
     if (gameOver && IsKeyPressed(KEY_ENTER)) {
         gameOver = false;
@@ -187,4 +205,29 @@ void Program::Reset() {
     count = 0;
     delay = 0;
     lives = 3;
+    Enemy::score = 0;
+
+    Enemy::enemies.push_back(std::pair<std::pair<float, float>, Enemy*> {
+            std::pair<float, float>{350, 150}, 
+            new SpEnemy(350, 150)
+        });
+
+    Enemy::enemies.push_back(std::pair<std::pair<float, float>, Enemy*> {
+            std::pair<float, float>{600, 150}, 
+            new SpEnemy(600, 150)
+        });
+
+    for (int i = 0; i < 30; i++) {
+        int column = i % 10; 
+        int row = i / 10;
+        float x = 250 + 50 * column;
+        float y = 200 + 50 * row;
+
+
+
+        Enemy::enemies.push_back(std::pair<std::pair<float, float>, Enemy*> {
+            std::pair<float, float>{x, y}, 
+            new StdEnemy(x, y)
+        });
+    }
 }

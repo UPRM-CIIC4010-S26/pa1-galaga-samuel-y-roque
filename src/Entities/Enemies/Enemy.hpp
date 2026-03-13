@@ -22,6 +22,8 @@ class Enemy {
         inline static float direction = 0.5;
         inline static int directionChange = 100;
         inline static std::vector<std::pair<std::pair<float, float>, Enemy*>> enemies;
+        inline static int score = 0;
+        int points = 100;
 
         Enemy() {}
 
@@ -61,6 +63,7 @@ class Enemy {
                         Animation::animations.push_back(
                             Animation(p.second->position.first, p.second->position.second, 155, 0, 33, 33, 30, 30, 4, ImageManager::SpriteSheet)
                         );
+                        score += p.second -> points;
                         p.second = nullptr;
                     }
                 }
