@@ -60,7 +60,7 @@ class Enemy {
                     }
 
                     if (p.second->health <= 0) {
-                        score += p.second->points; //score acordado por partner
+                        //score += p.second->points; //score acordado por partner
                         Animation::animations.push_back(
                             Animation(p.second->position.first, p.second->position.second, 155, 0, 33, 33, 30, 30, 4, ImageManager::SpriteSheet)
                         );
